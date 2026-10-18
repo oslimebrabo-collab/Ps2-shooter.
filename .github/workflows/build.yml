@@ -5,7 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: docker run --rm -v "$PWD":/src -w /src ps2dev/ps2dev:latest make
+      - run: docker run --rm -v "$PWD":/src -w /src ps2dev/ps2dev:latest sh -c "apk add --no-cache make && make"
       - uses: actions/upload-artifact@v4
         with:
           name: zona_de_tiro
