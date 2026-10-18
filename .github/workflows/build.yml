@@ -1,12 +1,10 @@
-name: Build PS2 ELF
-on: [push, workflow_dispatch]
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: docker run --rm -v "$PWD":/src -w /src ps2dev/ps2dev:latest sh -c "apk add --no-cache make && make"
-      - uses: actions/upload-artifact@v4
-        with:
-          name: zona_de_tiro
-          path: zona_de_tiro.elf
+EE_BIN  = zona_de_tiro.elf
+EE_OBJS = main.o game.o
+EE_INCS += -I$(PS2DEV)/gsKit/include -I$(PS2SDK)/ports/include
+EE_LDFLAGS += -L$(PS2DEV)/gsKit/lib -L$(PS2SDK)/ports/lib
+EE_LIBS = -lgskit -ldmakit -lpad -lm
+
+all: $(EE_BIN)
+
+include $(PS2SDK)/samples/Makefile.pref
+include $(PS2SDK)/samples/Makefile.eeglobal
